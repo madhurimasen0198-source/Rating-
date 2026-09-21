@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rate My Painting</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex; justify-content: center; align-items: center; padding: 24px;
+  }
+  .card {
+    background: #fff; border-radius: 18px; padding: 36px 28px;
+    max-width: 420px; width: 100%; text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  }
+  .card img {
+    width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+    border-radius: 12px; margin-bottom: 20px; background: #eee;
+  }
+  h1 { font-size: 22px; color: #2b2b33; margin-bottom: 6px; }
+  p.sub { color: #7a7a85; margin-bottom: 22px; font-size: 14px; }
+  .stars { display: flex; justify-content: center; gap: 6px; margin-bottom: 20px; }
+  .stars button {
+    font-size: 34px; background: none; border: none; cursor: pointer;
+    color: #d9d9e3; transition: transform 0.15s, color 0.15s; line-height: 1;
+  }
+  .stars button:hover { transform: scale(1.2); }
+  .stars button.active { color: #f5b301; }
+  textarea {
+    width: 100%; height: 70px; border: 1px solid #e2e2e8; border-radius: 10px;
+    padding: 10px 12px; font-size: 14px; resize: vertical; margin-bottom: 18px; color: #2b2b33;
+  }
+  .submit-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff; border: none; padding: 12px 36px; font-size: 15px;
+    border-radius: 30px; cursor: pointer; transition: opacity 0.2s; font-weight: 600;
+  }
+  .submit-btn:hover { opacity: 0.88; }
+  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .hidden { display: none; }
+  .thanks { font-size: 19px; color: #3f9d4b; margin-top: 8px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div id="form-view">
+    <img src="painting.png" alt="Painting">
+    <h1>Rate My Painting</h1>
+    <p class="sub">How much do you like it?</p>
+    <div class="stars" id="stars">
+      <button data-value="1">★</button>
+      <button data-value="2">★</button>
+      <button data-value="3">★</button>
+      <button data-value="4">★</button>
+      <button data-value="5">★</button>
+    </div>
+    <textarea id="comment" placeholder="Leave a comment (optional)..."></textarea>
+    <button class="submit-btn" id="submitBtn" disabled>Submit Rating</button>
+  </div>
+  <div id="thanks-view" class="hidden">
+    <div class="thanks">✓ Thank you for rating!</div>
+    <p class="sub" style="margin-top:8px;">Your feedback means a lot. 🎨</p>
+  </div>
+</div>
+
+<script>
+  let rating = 0;
+  const stars = document.querySelectorAll('#stars button');
+  const submitBtn = document.getElementById('submitBtn');
+
+  stars.forEach(btn => {
+    btn.addEventListener('click', () => {
+      rating = parseInt(btn.dataset.value);
+      stars.forEach(s => s.classList.toggle('active', parseInt(s.dataset.value) <= rating));
+      submitBtn.disabled = false;
+    });
+  });
+
+  submitBtn.addEventListener('click', () => {
+    const comment = document.getElementById('comment').value.trim();
+
+    // TODO: this is where the rating actually gets sent somewhere you can see it.
+    // Right now it only logs to the visitor's own browser console, so you as the
+    // artist never see it. See the note below the code for a free 2-minute fix.
+    console.log('Rating:', rating, 'Comment:', comment);
+
+    document.getElementById('form-view').classList.add('hidden');
+    document.getElementById('thanks-view').classList.remove('hidden');
+  });
+</script>
+</body>
+</html>
